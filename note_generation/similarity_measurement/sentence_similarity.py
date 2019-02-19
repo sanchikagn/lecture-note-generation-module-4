@@ -72,52 +72,6 @@ def sentence_similarity(sentence1, sentence2):
     return score
 
 
-# sentences = [
-#     "Dogs are awesome.",
-#     "Some gorgeous creatures are felines.",
-#     "Dolphins are swimming mammals.",
-#     "Cats are beautiful animals.",
-# ]
-#
-# focus_sentence = "Cats are beautiful animals."
-#
-# for sentence in sentences:
-#     print("Similarity(\"%s\", \"%s\") = %s" % (focus_sentence, sentence, sentence_similarity(focus_sentence, sentence)))
-#     print("Similarity(\"%s\", \"%s\") = %s" % (sentence, focus_sentence, sentence_similarity(sentence, focus_sentence)))
-
-# Similarity("Cats are beautiful animals.", "Dogs are awesome.") = 0.511111111111
-# Similarity("Dogs are awesome.", "Cats are beautiful animals.") = 0.666666666667
-
-# Similarity("Cats are beautiful animals.", "Some gorgeous creatures are felines.") = 0.833333333333
-# Similarity("Some gorgeous creatures are felines.", "Cats are beautiful animals.") = 0.833333333333
-
-# Similarity("Cats are beautiful animals.", "Dolphins are swimming mammals.") = 0.483333333333
-# Similarity("Dolphins are swimming mammals.", "Cats are beautiful animals.") = 0.4
-
-# Similarity("Cats are beautiful animals.", "Cats are beautiful animals.") = 1.0
-# Similarity("Cats are beautiful animals.", "Cats are beautiful animals.") = 1.0
-
-
-# def symmetric_sentence_similarity(sentence1, sentence2):
-#     """ compute the symmetric sentence similarity using Wordnet """
-#     return (sentence_similarity(sentence1, sentence2) + sentence_similarity(sentence2, sentence1)) / 2
-#
-#
-# print("\n\nSymmetric Similarity\n")
-# for sentence in sentences:
-#     print("SymmetricSimilarity(\"%s\", \"%s\") = %s" % (
-#         focus_sentence, sentence, symmetric_sentence_similarity(focus_sentence, sentence)))
-#     print("SymmetricSimilarity(\"%s\", \"%s\") = %s" % (
-#         sentence, focus_sentence, symmetric_sentence_similarity(sentence, focus_sentence)))
-
-# SymmetricSimilarity("Cats are beautiful animals.", "Dogs are awesome.") = 0.588888888889
-# SymmetricSimilarity("Dogs are awesome.", "Cats are beautiful animals.") = 0.588888888889
-
-# SymmetricSimilarity("Cats are beautiful animals.", "Some gorgeous creatures are felines.") = 0.833333333333
-# SymmetricSimilarity("Some gorgeous creatures are felines.", "Cats are beautiful animals.") = 0.833333333333
-
-# SymmetricSimilarity("Cats are beautiful animals.", "Dolphins are swimming mammals.") = 0.441666666667
-# SymmetricSimilarity("Dolphins are swimming mammals.", "Cats are beautiful animals.") = 0.441666666667
-
-# SymmetricSimilarity("Cats are beautiful animals.", "Cats are beautiful animals.") = 1.0
-# SymmetricSimilarity("Cats are beautiful animals.", "Cats are beautiful animals.") = 1.0
+# Computing the symmetric sentence similarity using WordNet
+def symmetric_sentence_similarity(sentence1, sentence2):
+    return (sentence_similarity(sentence1, sentence2) + sentence_similarity(sentence2, sentence1)) / 2

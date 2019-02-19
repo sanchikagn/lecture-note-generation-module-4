@@ -10,7 +10,7 @@ from note_generation import add_lesson_name, converting_pdf, add_subtopic, open_
 content_aligned = ContentAlignment()
 
 # Time-aligned lecture
-lecture = content_aligned.aligning_content('input_2')
+lecture = content_aligned.aligning_content('input_1')
 
 # Obtaining ontology
 print('Retrieving Ontology')
@@ -88,7 +88,10 @@ def generating_lecture(lecture_pd):
         # Add images to previous topic
         image = column[5]
         if image:
-            doc = doc + add_image(image)
+            result = [x.strip() for x in image.split(',')]
+            for x in result[1:]:
+                doc = doc + add_image(x)
+
     if not related_kps.empty:
         related_kps = related_kps.drop_duplicates({'entity'}, keep='last')
         # print(related_kps)

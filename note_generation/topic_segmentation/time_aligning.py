@@ -98,7 +98,7 @@ class ContentAlignment:
                         break
                     elif start <= time < end:
                         image_name = str(row_content[1])
-                        image_path = image_path + image_name
+                        image_path = image_path + ',' + image_name
                     else:
                         continue
 

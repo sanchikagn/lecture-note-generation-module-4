@@ -40,6 +40,7 @@ class ExtractTopics:
                                                               'start': time, 'end': time}, ignore_index=True)
 
     def topics_labeled(self):
+        self.topic_extraction = self.topic_extraction.drop_duplicates({'text'}, keep='first')
         for index, row in self.topic_extraction.iterrows():
             if row[0] == 'text':
                 self.text_typed = self.text_typed.append({'label': 'text', 'start': row[2], 'text': row[1]},

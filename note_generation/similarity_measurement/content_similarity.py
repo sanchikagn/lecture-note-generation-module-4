@@ -1,4 +1,4 @@
-from .sentence_similarity import sentence_similarity
+from .sentence_similarity import symmetric_sentence_similarity
 import pandas as pd
 
 
@@ -10,7 +10,7 @@ def word_net_similarity(sentences, focus_sentence):
     for sentence in sentences:
         freq = 0.0
         for sent in focus_sentence:
-            similarity_sent = sentence_similarity(sent, sentence)
+            similarity_sent = symmetric_sentence_similarity(sent, sentence)
             sent_freq.append(similarity_sent)
 
         # Get weighted similarity

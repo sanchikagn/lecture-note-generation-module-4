@@ -7,8 +7,8 @@
 1_5,Telephone skills and etiquette
 3_0_Topic,Lesson objectives
 3_1,By the end of this lesson, you will learn
-3_2,What it means to be a good employee
-3_3,What it means to be a good employee
+3_2,What it means to be a good employee?
+3_3,What it means to be a good employee?
 3_4,ldentify keys to being a good employee
 3_5,ldentify why some employees violate keys to being good employees
 65_0_Topic,Warm up activity

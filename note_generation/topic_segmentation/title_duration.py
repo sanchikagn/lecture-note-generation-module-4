@@ -17,6 +17,7 @@ class TitleDuration:
         for index, column in islice(lecture_titles.iterrows(), 1, None):
             # time in seconds
             time = (int(column[0]))
+            # print(time)
             end = time - 1
             # creating topic categories
             title_duration = title_duration.append({'start': start, 'end': end, 'text': topic}, ignore_index=True)
@@ -25,6 +26,7 @@ class TitleDuration:
         last_topic = lecture_titles['text'].iloc[-1]
         title = last_topic
         title_duration = title_duration.append({'start': start, 'end': str(start+100000), 'text': title}, ignore_index=True)
-        title_duration_sorted = title_duration.sort_values(by=['start'])
+        # print(title_duration)
+        # title_duration_sorted = title_duration.sort_values(by=['start'])
         # title_duration_sorted.to_csv('resources/title_duration.csv', header=None)
-        return title_duration_sorted
+        return title_duration

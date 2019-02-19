@@ -10,7 +10,7 @@ from note_generation import add_lesson_name, converting_pdf, add_subtopic, open_
 content_aligned = ContentAlignment()
 
 # Time-aligned lecture
-lecture = content_aligned.aligning_content('input_1')
+lecture = content_aligned.aligning_content('input_2')
 
 # Obtaining ontology
 print('Retrieving Ontology')
@@ -46,6 +46,7 @@ def generating_lecture(lecture_pd):
     element1 = add_lesson_name(lecture_pd['topic'].iloc[0])
     lesson = lecture['topic'].iloc[0]
     doc = element1
+    related_kps = pd.DataFrame()
     for index, column in lecture_pd.iterrows():
         doc_element = ''
 
@@ -57,6 +58,7 @@ def generating_lecture(lecture_pd):
         # Pre-processing topics to search on ontology
         keywords = preprocessing_topic(topic)
         unique_topic_content = get_classes(keywords).dropna()
+        related_kps = related_kps.append(unique_topic_content)
 
         content = column[3]
         # Find similarity
@@ -66,7 +68,7 @@ def generating_lecture(lecture_pd):
             # labeled_content.groupby(labeled_content['sentence'])
             for index_content, row_content in labeled_content.iterrows():
                 doc_element = doc_element + pdf_content_cat(row_content['sentence'], row_content['label'])
-            labeled_content.to_csv('compare.csv', header=None)
+            # labeled_content.to_csv('compare.csv', header=None)
         elif content:
             doc_element = doc_element + add_paragraph(content)
         # else:
@@ -87,8 +89,10 @@ def generating_lecture(lecture_pd):
         image = column[5]
         if image:
             doc = doc + add_image(image)
-        # if not unique_topic_content.empty:
-        #     doc = doc + add_related_knowledge_points(unique_topic_content)
+    if not related_kps.empty:
+        related_kps = related_kps.drop_duplicates({'entity'}, keep='last')
+        # print(related_kps)
+        doc = doc + add_related_knowledge_points(related_kps)
     return doc, lesson
 
 

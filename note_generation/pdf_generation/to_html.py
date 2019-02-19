@@ -1,4 +1,6 @@
 # Write to html
+import re
+
 f = open('lecture.html','w')
 
 
@@ -40,13 +42,17 @@ def add_list_item(item):
 
 
 def add_related_knowledge_points(content):
-    print(content)
-    k_points = """<h5>Facts from Related Lessons: </h5><ul>"""
+    # print(content)
+    k_points = """<h5 class="break-before">Facts from Related Lessons: </h5><ul>"""
     efacts = ''
     for index, column in content.iterrows():
         entity = column[0]
         facts = column[1]
-        kp = """<li><strong>""" + entity + """:</strong> """ + facts + """</li>"""
+        splitted = re.sub('(?!^)([A-Z][a-z]+)', r' \1', entity).split()
+        name = ''
+        for w in splitted:
+            name = name + w + ' '
+        kp = """<li><strong>""" + name + """:</strong> """ + facts + """</li>"""
         efacts = efacts + kp
     k_points = k_points + efacts + """</ul>"""
     return k_points

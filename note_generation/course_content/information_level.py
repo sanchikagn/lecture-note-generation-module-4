@@ -52,14 +52,29 @@ class Course(Thing):
                                      SELECT DISTINCT ?iri ?fact
                                      WHERE{{
                                             ?iri ?p ?o.
-                                            ?iri my:hasFact ?fact
-                                            FILTER regex(str(?iri), '""" + title_keywords + """', 'i') }
+                                            ?iri my:hasActivity ?activity.
+                                            ?activity my:hasTask ?task.
+                                            ?task my:hasFact ?fact.
+                                            FILTER regex(str(?iri), '""" + title_keywords + """', 'i')
+                                            FILTER regex(str(?r), '""" + title_keywords + """', 'i')}
                                      UNION{
                                            ?iri rdf:type ?s.
                                            ?iri my:hasFact ?fact.
                                            ?s rdf:type owl:Class.
-                                           FILTER regex(str(?s), '""" + title_keywords + """', 'i')
-                                           }}"""
+                                            FILTER regex(str(?s), '""" + title_keywords + """', 'i') }
+                                     UNION{
+                                            ?iri rdf:type ?k.
+                                                   ?k rdfs:subClassOf ?s.
+                                                   ?iri my:hasFact ?fact.
+                                                   ?s rdf:type owl:Class.
+                                                   FILTER regex(str(?s), '""" + title_keywords + """', 'i') }
+                                             UNION{
+                                                   ?iri ?p ?o.
+                                                    ?iri my:hasActivity ?activity.
+                                                    ?activity my:hasTask ?task.
+                                                    ?task my:hasFact ?fact.
+                                                    FILTER regex(str(?fact), '""" + title_keywords + """', 'i')}
+                                      }"""
         results = self.graph.query(query)
         for item in results:
             fact = str(item[1].toPython())

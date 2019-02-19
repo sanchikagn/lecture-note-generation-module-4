@@ -47,26 +47,25 @@ def generating_lecture(lecture_pd):
     lesson = lecture['topic'].iloc[0]
     doc = element1
     for index, column in lecture_pd.iterrows():
-        topic = column[2]
         doc_element = ''
 
         # Sub-topic for PDF
-        if topic is not lesson:
-            doc_element = add_subtopic(topic)
+        if column[2] is not lesson:
+            doc_element = add_subtopic(column[2])
 
+        topic = column[2]
         # Pre-processing topics to search on ontology
         keywords = preprocessing_topic(topic)
         unique_topic_content = get_classes(keywords).dropna()
-        content = column[3]
 
+        content = column[3]
         # Find similarity
-        if not unique_topic_content.empty and content:
-            content = preprocessing_acontent(content)
-            labeled_content = word_net_similarity(content, unique_topic_content['facts'])
+        if content and not unique_topic_content.empty:
+            preprocessed_content = preprocessing_acontent(content)
+            labeled_content = word_net_similarity(preprocessed_content, unique_topic_content['facts'])
             # labeled_content.groupby(labeled_content['sentence'])
             for index_content, row_content in labeled_content.iterrows():
-                doc_element = pdf_content_cat(row_content['sentence'], row_content['label'])
-                doc = doc + doc_element
+                doc_element = doc_element + pdf_content_cat(row_content['sentence'], row_content['label'])
             labeled_content.to_csv('compare.csv', header=None)
         elif content:
             doc_element = doc_element + add_paragraph(content)

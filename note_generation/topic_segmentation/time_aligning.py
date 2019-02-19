@@ -9,7 +9,6 @@ class ContentAlignment:
     def aligning_content(cls, text_path):
         print('Time Aligning Content')
         extracting_data = ExtractTopics()
-        # extracting_data.text_to_csv('../../data/input_1/slidedata.txt')
         extracting_data.text_to_csv('data/' + text_path + '/slidedata.txt')
         lecture_titles_pre = pd.read_csv('pptskills.csv', sep=',', header=None, names=['type', 'title'])
         lecture_titles_pre = lecture_titles_pre.apply(lambda point: extracting_data.extract_details(point[0], point[1]),
@@ -22,7 +21,7 @@ class ContentAlignment:
         titles = lecture_duration.converting_to_topic_classes(extracting_data.topics_typed)
 
         # Inspecting data
-        audio_transcript = pd.read_csv('data/'+ text_path + '/voice_text.csv', sep=',', header=None,
+        audio_transcript = pd.read_csv('data/'+ text_path + '/voice_text.csv', sep=';', header=None,
                                        names=['start', 'text'], converters={'label': str, 'text': str})
         audio_transcript['label'] = 'audio'
 
@@ -107,9 +106,9 @@ class ContentAlignment:
             lecture = lecture.append({'start': start, 'end': end, 'topic': topic, 'content': topic_content, 'text': text,
                                       'images': image_path}, ignore_index=True)
 
-            print(topic + ' ' + str(start) + ' ' + str(end))
+            # print(topic + ' ' + str(start) + ' ' + str(end))
             # print(topic_content) if topic_content != '' else print('')
             # print('TEXT: ' + text)
-            print(image_path)
+            # print(image_path)
             # print('\n')
         return lecture

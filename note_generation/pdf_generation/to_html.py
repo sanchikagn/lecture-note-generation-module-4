@@ -40,7 +40,15 @@ def add_list_item(item):
 
 
 def add_related_knowledge_points(content):
-    k_points = """<br/><h5>Facts from Related Lessons: </h5><p>""" + content + """</p>"""
+    print(content)
+    k_points = """<h5>Facts from Related Lessons: </h5><ul>"""
+    efacts = ''
+    for index, column in content.iterrows():
+        entity = column[0]
+        facts = column[1]
+        kp = """<li><strong>""" + entity + """:</strong> """ + facts + """</li>"""
+        efacts = efacts + kp
+    k_points = k_points + efacts + """</ul>"""
     return k_points
 
 

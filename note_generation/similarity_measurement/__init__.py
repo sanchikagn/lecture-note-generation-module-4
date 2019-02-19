@@ -1,0 +1,1 @@
+from .content_similarity import word_net_similarity

@@ -1,0 +1,10 @@
+venv/*
+.idea/*
+# Byte-compiled / optimized / DLL files
+__pycache__/*
+note_generation/text_preprocessing/__pycache__/*
+note_generation/topic_segmentation/__pycache__/*
+note_generation/__pycache__/*
+note_generation/course_content/__pycache__/*
+note_generation/pdf_generation/__pycache__/*
+note_generation/similarity_measurement/__pycache__/*

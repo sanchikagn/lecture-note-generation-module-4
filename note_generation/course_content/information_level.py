@@ -90,23 +90,48 @@ class Course(Thing):
         return related_facts
 
     # Searching for related Knowledge Points
-    def search_kps(self, topic, title_keywords):
+    def search_kps(self, title_keywords):
         print('Searching Knowledge Points')
-        query = """PREFIX my: <http://www.itfac.lk/kasumi/ontologies/english.owl#> 
+        related_facts = pd.DataFrame(columns=['entity', 'facts'])
+        query = """PREFIX my: <http://www.itfac.lk/kasumi/ontologies/english.owl#>
                                              PREFIX owl: <http://www.w3.org/2002/07/owl#>
                                              PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                                             SELECT DISTINCT ?iri ?p ?o
-                                             WHERE{
-                                             ?iri ?p ?o.
-                                             FILTER regex(str(?iri), '""" + title_keywords + """', 'i')
-                                             }"""
+                                             SELECT DISTINCT ?iri ?fact
+                                             WHERE{{
+                                                    ?iri ?p ?o.
+                                                    ?iri my:hasActivity ?activity.
+                                                    ?activity my:hasTask ?task.
+                                                    ?task my:hasFact ?fact.
+                                                    FILTER regex(str(?iri), '""" + title_keywords + """', 'i')
+                                                    FILTER regex(str(?r), '""" + title_keywords + """', 'i')}
+                                             UNION{
+                                                   ?iri rdf:type ?s.
+                                                   ?iri my:hasFact ?fact.
+                                                   ?s rdf:type owl:Class.
+                                                    FILTER regex(str(?s), '""" + title_keywords + """', 'i') }
+                                             UNION{
+                                                    ?iri rdf:type ?k.
+                                                           ?k rdfs:subClassOf ?s.
+                                                           ?iri my:hasFact ?fact.
+                                                           ?s rdf:type owl:Class.
+                                                           FILTER regex(str(?s), '""" + title_keywords + """', 'i') }
+                                                     UNION{
+                                                           ?iri ?p ?o.
+                                                            ?iri my:hasActivity ?activity.
+                                                            ?activity my:hasTask ?task.
+                                                            ?task my:hasFact ?fact.
+                                                            FILTER regex(str(?fact), '""" + title_keywords + """', 'i')}
+                                              }"""
         results = self.graph.query(query)
         for item in results:
+            fact = str(item[1].toPython())
+            # print(fact)
             class_entity = str(item['iri'].toPython())
             class_entity = re.sub(r'.*#', "", class_entity)
-            # print(class_entity)
-            data = str(item['o'].toPython())
-            # data = re.sub(r'.*#', "", data)
-            self.related_kps = self.related_kps.append({'keyword': topic, 'keywords': title_keywords,
-                                                        'entity': class_entity, 'facts': data}, ignore_index=True)
-            # print(data)
+            if class_entity.isnumeric():
+                continue
+            else:
+                related_facts = related_facts.append({'entity': class_entity, 'facts': fact}, ignore_index=True)
+            # print(self.topic_entities)
+            # print(item)
+        return related_facts

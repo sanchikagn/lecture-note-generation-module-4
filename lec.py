@@ -10,7 +10,7 @@ from note_generation import add_lesson_name, converting_pdf, add_subtopic, open_
 content_aligned = ContentAlignment()
 
 # Time-aligned lecture
-lecture = content_aligned.aligning_content('input_1')
+lecture = content_aligned.aligning_content('input_x')
 
 # Obtaining ontology
 print('Retrieving Ontology')
@@ -21,13 +21,16 @@ acquire_ontology = Course()
 def get_classes(topics):
     topic_words = str(topics).split()
     facts = pd.DataFrame()
+    facts_kp = pd.DataFrame()
     for word in topic_words:
         fact = acquire_ontology.search_features(word)
-        # Acquire_ontology.search_kps(topics, word)
+        fact_kp = acquire_ontology.search_kps(word)
         facts = facts.append(fact)
+        facts_kp = facts_kp.append(fact_kp)
         # Removing duplicates from entities
         facts = facts.drop_duplicates({'facts'}, keep='last')
-    return facts
+        facts_kp = facts_kp.drop_duplicates({'facts'}, keep='last')
+    return facts, facts_kp
 
 
 # Highlight off-topic
@@ -47,6 +50,7 @@ def generating_lecture(lecture_pd):
     lesson = lecture['topic'].iloc[0]
     doc = element1
     related_kps = pd.DataFrame()
+    related_kp = pd.DataFrame()
     for index, column in lecture_pd.iterrows():
         doc_element = ''
 
@@ -57,8 +61,10 @@ def generating_lecture(lecture_pd):
         topic = column[2]
         # Pre-processing topics to search on ontology
         keywords = preprocessing_topic(topic)
-        unique_topic_content = get_classes(keywords).dropna()
-        related_kps = related_kps.append(unique_topic_content)
+        unique_topic_content, related_kps = get_classes(keywords)
+        unique_topic_content = unique_topic_content.dropna()
+        related_kps = related_kps.dropna()
+        related_kp = related_kp.append(related_kps)
 
         content = column[3]
         # Find similarity
@@ -90,10 +96,10 @@ def generating_lecture(lecture_pd):
             for x in result[1:]:
                 doc = doc + add_image(x)
 
-    if not related_kps.empty:
-        related_kps = related_kps.drop_duplicates({'entity'}, keep='last')
+    if not related_kp.empty:
+        related_kp = related_kp.drop_duplicates({'entity'}, keep='last')
         # print(related_kps)
-        doc = doc + add_related_knowledge_points(related_kps)
+        doc = doc + add_related_knowledge_points(related_kp)
     return doc, lesson
 
 

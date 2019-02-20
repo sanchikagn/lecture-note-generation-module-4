@@ -71,8 +71,6 @@ def generating_lecture(lecture_pd):
             # labeled_content.to_csv('compare.csv', header=None)
         elif content:
             doc_element = doc_element + add_paragraph(content)
-        # else:
-        #     # Search online
 
         # Text for PDF
         text = column[4]

@@ -10,7 +10,7 @@ from note_generation import add_lesson_name, converting_pdf, add_subtopic, open_
 content_aligned = ContentAlignment()
 
 # Time-aligned lecture
-lecture = content_aligned.aligning_content('input_x')
+lecture = content_aligned.aligning_content('input_1')
 
 # Obtaining ontology
 print('Retrieving Ontology')

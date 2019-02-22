@@ -106,9 +106,9 @@ class ContentAlignment:
             lecture = lecture.append({'start': start, 'end': end, 'topic': topic, 'content': topic_content, 'text': text,
                                       'images': image_path}, ignore_index=True)
 
-            # print(topic + ' ' + str(start) + ' ' + str(end))
-            # print(topic_content) if topic_content != '' else print('')
-            # print('TEXT: ' + text)
-            # print(image_path)
-            # print('\n')
+            print(topic)
+            print(topic_content) if topic_content != '' else print('')
+            print('TEXT: ' + text)
+            print(image_path)
+            print('\n')
         return lecture
